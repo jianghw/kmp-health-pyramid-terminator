@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.KmpTerminator" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#FF1B5E20</item>
+        <item name="android:navigationBarColor">#FF1B5E20</item>
+    </style>
+</resources>

@@ -1,0 +1,186 @@
+name: Multi-Platform Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true"
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Android Release APK
+        run: ./gradlew :androidApp:assembleRelease
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: androidApp/build/outputs/apk/release/*.apk
+
+  build-backend:
+    name: Build Backend JAR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Backend
+        run: ./gradlew :backend:build
+
+      - name: Upload Backend JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: backend/build/libs/*.jar
+
+  build-macos:
+    name: Build macOS Desktop App
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build macOS DMG
+        run: ./gradlew :desktopApp:packageDmg
+
+      - name: Upload macOS DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: desktopApp/build/compose/binaries/main/dmg/*.dmg
+
+  build-windows:
+    name: Build Windows Desktop App
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build Windows MSI
+        run: ./gradlew :desktopApp:packageMsi
+
+      - name: Upload Windows MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msi
+          path: desktopApp/build/compose/binaries/main/msi/*.msi
+
+  build-linux:
+    name: Build Linux Desktop App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Linux DEB
+        run: ./gradlew :desktopApp:packageDeb
+
+      - name: Upload Linux DEB
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-deb
+          path: desktopApp/build/compose/binaries/main/deb/*.deb
+
+  build-ios:
+    name: Build iOS Framework
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build iOS Framework (arm64)
+        run: ./gradlew :shared:linkReleaseFrameworkIosArm64
+
+      - name: Build iOS Simulator Framework (arm64)
+        run: ./gradlew :shared:linkReleaseFrameworkIosSimulatorArm64
+
+      - name: Upload iOS Framework
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-framework
+          path: shared/build/bin/iosArm64/releaseFramework/shared.framework
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-android, build-backend, build-macos, build-windows, build-linux, build-ios]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release
+          cp artifacts/android-apk/*.apk release/ 2>/dev/null || true
+          cp artifacts/backend-jar/*.jar release/ 2>/dev/null || true
+          cp artifacts/macos-dmg/*.dmg release/ 2>/dev/null || true
+          cp artifacts/windows-msi/*.msi release/ 2>/dev/null || true
+          cp artifacts/linux-deb/*.deb release/ 2>/dev/null || true
+          cd artifacts/ios-framework && tar czf ../../release/ios-framework.tar.gz . 2>/dev/null || true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false

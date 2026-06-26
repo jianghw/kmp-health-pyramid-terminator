@@ -1,0 +1,90 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Kotlin ###
+.kotlin
+
+### Android ###
+*.apk
+*.aab
+*.dex
+*.class
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+### macOS ###
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+### Windows ###
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+### Linux ###
+*~
+.directory
+
+### VS Code ###
+.vscode
+*.code-workspace
+
+### Gradle ###
+local.properties
+
+### Build outputs ###
+*.jar
+*.war
+*.nar
+*.ear
+*.tar.gz
+*.rar
+*.dmg
+*.msi
+*.deb
+*.pkg
+
+### Env ###
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+### Logs ###
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Temp ###
+temp
+tmp
+.tmp
+
+### Backend ###
+backend/build/
+
+### Desktop icon resources (generated) ###
+desktopApp/src/jvmMain/resources/*.icns
+desktopApp/src/jvmMain/resources/*.ico
+desktopApp/src/jvmMain/resources/*.png
