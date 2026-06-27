@@ -1,4 +1,4 @@
-package com.terminator.android.ui.screens
+package com.terminator.desktop.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,36 +13,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.terminator.android.ui.theme.BrandColors
-import com.terminator.android.ui.theme.CardColors
-import com.terminator.android.ui.theme.HeaderColors
-import com.terminator.android.ui.theme.HeaderGradients
+import com.terminator.desktop.ui.theme.BrandColors
+import com.terminator.desktop.ui.theme.CardColors
+import com.terminator.desktop.ui.theme.HeaderColors
 
 data class TaskExecutionResult(
     val appName: String,
     val taskName: String,
     val status: String,
     val message: String
-)
-
-data class ExecutionStatus(
-    val pendingCount: Int,
-    val completedCount: Int,
-    val lastExecutionTime: String?,
-    val appStatuses: List<AppTaskStatus>
-)
-
-data class AppTaskStatus(
-    val appName: String,
-    val totalTasks: Int,
-    val completedTasks: Int
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,14 +46,14 @@ fun OneTapScreen(
     var lastExecutionTime by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = BrandColors.SurfaceBg
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(0.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
                 OneTapHeader(onBack = onNavigateBack)
@@ -80,12 +64,9 @@ fun OneTapScreen(
                     pendingCount = pendingCount,
                     completedCount = completedCount,
                     lastExecutionTime = lastExecutionTime,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                        .offset(y = (-20).dp)
+                    modifier = Modifier.padding(horizontal = 24.dp)
                 )
             }
-
-            item { Spacer(modifier = Modifier.height(16.dp)) }
 
             item {
                 ExecuteButton(
@@ -114,11 +95,9 @@ fun OneTapScreen(
                             )
                         }
                     },
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 24.dp)
                 )
             }
-
-            item { Spacer(modifier = Modifier.height(16.dp)) }
 
             if (showResults) {
                 item {
@@ -126,10 +105,9 @@ fun OneTapScreen(
                         completedTasks = completedTasks,
                         failedTasks = failedTasks,
                         skippedTasks = skippedTasks,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        modifier = Modifier.padding(horizontal = 24.dp)
                     )
                 }
-                item { Spacer(modifier = Modifier.height(12.dp)) }
             }
 
             if (executionResults.isNotEmpty()) {
@@ -141,23 +119,21 @@ fun OneTapScreen(
                         color = BrandColors.TextDark,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
+                            .padding(horizontal = 24.dp)
                     )
                 }
-                item { Spacer(modifier = Modifier.height(8.dp)) }
 
                 items(executionResults) { result ->
                     TaskResultCard(
                         result = result,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
                     )
                 }
             }
 
             item {
-                Spacer(modifier = Modifier.height(12.dp))
                 InfoTipCard(
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 24.dp)
                 )
                 Spacer(modifier = Modifier.height(32.dp))
             }
@@ -170,58 +146,31 @@ private fun OneTapHeader(onBack: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        HeaderGradients.OneTapStart,
-                        HeaderGradients.OneTapEnd
-                    ),
-                    start = Offset(0f, Float.POSITIVE_INFINITY),
-                    end = Offset(Float.POSITIVE_INFINITY, 0f)
-                )
-            )
+            .height(160.dp)
+            .background(HeaderColors.OneTap)
     ) {
-        // 装饰圆
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset(x = 50.dp, y = 30.dp)
-                .size(100.dp)
-                .background(Color.White.copy(alpha = 0.06f), CircleShape)
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .offset(x = (-20).dp, y = 60.dp)
-                .size(60.dp)
-                .background(Color.White.copy(alpha = 0.04f), CircleShape)
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .statusBarsPadding()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(40.dp),
                     shape = CircleShape,
                     color = Color.White.copy(alpha = 0.15f)
                 ) {
-                    IconButton(onClick = onBack, modifier = Modifier.size(36.dp)) {
+                    IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(22.dp),
                             tint = Color.White
                         )
                     }
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = "一键执行",
                     style = MaterialTheme.typography.titleLarge,
@@ -230,11 +179,11 @@ private fun OneTapHeader(onBack: () -> Unit) {
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(44.dp),
                     shape = RoundedCornerShape(10.dp),
                     color = Color.White.copy(alpha = 0.2f)
                 ) {
@@ -242,12 +191,12 @@ private fun OneTapHeader(onBack: () -> Unit) {
                         Icon(
                             Icons.Default.Bolt,
                             contentDescription = null,
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(26.dp),
                             tint = Color(0xFFFDE68A)
                         )
                     }
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
                         text = "智能自动化执行",
@@ -258,12 +207,10 @@ private fun OneTapHeader(onBack: () -> Unit) {
                     Text(
                         text = "解放双手，自动完成所有待办",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.White.copy(alpha = 0.7f)
+                        color = Color.White.copy(alpha = 0.8f)
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -292,7 +239,7 @@ private fun TaskOverviewCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp),
+                .padding(vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -308,7 +255,7 @@ private fun TaskOverviewCard(
                 Box(
                     modifier = Modifier
                         .width(1.dp)
-                        .height(50.dp)
+                        .height(60.dp)
                         .background(Color(0xFFB8D4C8))
                 )
                 TaskStatCircle(
@@ -320,10 +267,10 @@ private fun TaskOverviewCard(
             }
 
             if (lastExecutionTime != null) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     "上次执行: $lastExecutionTime",
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.labelMedium,
                     color = BrandColors.TextSecondary
                 )
             }
@@ -340,23 +287,23 @@ private fun TaskStatCircle(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Surface(
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier.size(64.dp),
             shape = CircleShape,
             color = bgColor
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Text(
                     text = count.toString(),
-                    fontSize = 28.sp,
+                    fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = color
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelMedium,
             color = BrandColors.TextSecondary
         )
     }
@@ -384,20 +331,20 @@ private fun ExecuteButton(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
+                .padding(24.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             if (isExecuting) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(36.dp),
                     color = Color.White,
                     strokeWidth = 3.dp
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(20.dp))
                 Text(
                     "正在执行...",
-                    fontSize = 18.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -405,21 +352,21 @@ private fun ExecuteButton(
                 Icon(
                     Icons.Default.PlayArrow,
                     contentDescription = null,
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(40.dp),
                     tint = Color.White
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
                         "一键执行所有任务",
-                        fontSize = 18.sp,
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
                     Text(
                         "点击后自动完成所有待处理任务",
-                        fontSize = 12.sp,
-                        color = Color.White.copy(alpha = 0.7f)
+                        fontSize = 14.sp,
+                        color = Color.White.copy(alpha = 0.8f)
                     )
                 }
             }
@@ -452,7 +399,7 @@ private fun ResultSummaryCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
+                .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -462,14 +409,14 @@ private fun ResultSummaryCard(
                     else -> Icons.Default.Warning
                 },
                 contentDescription = null,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(56.dp),
                 tint = when {
                     isSuccess -> Color(0xFF059669)
                     isAllFail -> Color(0xFFDC2626)
                     else -> Color(0xFFD97706)
                 }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 when {
                     isSuccess -> "全部完成！"
@@ -484,7 +431,7 @@ private fun ResultSummaryCard(
                     else -> Color(0xFFD97706)
                 }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 "成功: $completedTasks | 失败: $failedTasks | 跳过: $skippedTasks",
                 style = MaterialTheme.typography.bodyMedium,
@@ -496,7 +443,7 @@ private fun ResultSummaryCard(
 }
 
 @Composable
-fun TaskResultCard(
+private fun TaskResultCard(
     result: TaskExecutionResult,
     modifier: Modifier = Modifier
 ) {
@@ -511,11 +458,11 @@ fun TaskResultCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(44.dp),
                 shape = CircleShape,
                 color = when (result.status) {
                     "completed" -> Color(0xFFECFDF5)
@@ -532,7 +479,7 @@ fun TaskResultCard(
                             else -> Icons.Default.HourglassEmpty
                         },
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(22.dp),
                         tint = when (result.status) {
                             "completed" -> Color(0xFF059669)
                             "failed" -> Color(0xFFDC2626)
@@ -543,18 +490,18 @@ fun TaskResultCard(
                 }
             }
 
-            Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     result.taskName,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                     color = BrandColors.TextDark
                 )
                 Text(
                     result.appName,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = BrandColors.TextSecondary
                 )
             }
@@ -574,8 +521,8 @@ fun TaskResultCard(
                         "skipped" -> "跳过"
                         else -> "等待"
                     },
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = when (result.status) {
                         "completed" -> Color(0xFF059669)
@@ -600,11 +547,11 @@ private fun InfoTipCard(modifier: Modifier = Modifier) {
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(40.dp),
                 shape = CircleShape,
                 color = Color(0xFFD4EDDA)
             ) {
@@ -612,18 +559,18 @@ private fun InfoTipCard(modifier: Modifier = Modifier) {
                     Icon(
                         Icons.Default.Info,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(20.dp),
                         tint = BrandColors.PrimaryDeep
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(16.dp))
             Text(
                 "一键执行会自动完成所有待处理的签到、听课、答题等任务。" +
-                "执行过程中请保持网络连接。",
-                style = MaterialTheme.typography.labelSmall,
+                        "执行过程中请保持网络连接。",
+                style = MaterialTheme.typography.bodySmall,
                 color = BrandColors.TextSecondary,
-                lineHeight = 18.sp
+                lineHeight = 20.sp
             )
         }
     }

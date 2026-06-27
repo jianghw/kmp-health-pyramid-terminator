@@ -15,6 +15,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.HeaderColors
+import com.terminator.android.ui.theme.CardColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,8 +50,8 @@ fun CredentialInputScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = HeaderColors.CredentialInput,
+                    titleContentColor = BrandColors.TextDark
                 )
             )
         }
@@ -185,7 +188,7 @@ fun CredentialInputScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                    containerColor = CardColors.StatsMint
                 )
             ) {
                 Row(
@@ -195,12 +198,12 @@ fun CredentialInputScreen(
                     Icon(
                         Icons.Default.Info,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                        tint = BrandColors.PrimaryDeep
                     )
                     Text(
                         text = "凭证将使用加密方式安全存储在本地，不会上传到服务器。",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = BrandColors.TextDark
                     )
                 }
             }
@@ -210,7 +213,10 @@ fun CredentialInputScreen(
             Button(
                 onClick = { showSaveDialog = true },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = appName.isNotBlank() && alias.isNotBlank()
+                enabled = appName.isNotBlank() && alias.isNotBlank(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BrandColors.PrimaryDeep
+                )
             ) {
                 Icon(Icons.Default.Save, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))

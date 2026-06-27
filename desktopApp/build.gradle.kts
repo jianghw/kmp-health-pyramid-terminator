@@ -15,11 +15,14 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(libs.koin.compose)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+            // Skiko 原生渲染库（macOS arm64）
+            implementation("org.jetbrains.skiko:skiko-awt-runtime-macos-arm64:0.8.18")
         }
     }
 }

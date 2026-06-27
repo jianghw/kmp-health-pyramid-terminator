@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.HeaderColors
+import com.terminator.android.ui.theme.CardColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,8 +60,8 @@ fun BatchExecutionScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = HeaderColors.BatchExecution,
+                    titleContentColor = BrandColors.TextDark
                 )
             )
         }
@@ -74,7 +77,7 @@ fun BatchExecutionScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = CardColors.StatsMint
                     )
                 ) {
                     Column(
@@ -83,12 +86,14 @@ fun BatchExecutionScreen(
                         Text(
                             text = "批量任务执行",
                             style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = BrandColors.TextDark
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "共 $totalTasks 个任务待执行",
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = BrandColors.TextSecondary
                         )
 
                         if (isRunning) {
@@ -116,7 +121,7 @@ fun BatchExecutionScreen(
                                 Text(
                                     text = "当前任务: $currentTask",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    color = BrandColors.PrimaryDeep
                                 )
                             }
                         }
@@ -129,7 +134,7 @@ fun BatchExecutionScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = if (failedCount == 0) MaterialTheme.colorScheme.primaryContainer
+                            containerColor = if (failedCount == 0) CardColors.StatsMint
                             else MaterialTheme.colorScheme.errorContainer
                         )
                     ) {
@@ -139,7 +144,8 @@ fun BatchExecutionScreen(
                             Text(
                                 text = "执行结果",
                                 style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                color = BrandColors.TextDark
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Row(
@@ -150,7 +156,7 @@ fun BatchExecutionScreen(
                                     icon = Icons.Default.CheckCircle,
                                     label = "成功",
                                     count = completedCount,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = BrandColors.PrimaryDeep
                                 )
                                 ResultStatItem(
                                     icon = Icons.Default.Error,
@@ -162,7 +168,7 @@ fun BatchExecutionScreen(
                                     icon = Icons.Default.Percent,
                                     label = "成功率",
                                     count = "${((completedCount.toFloat() / totalTasks) * 100).toInt()}%",
-                                    color = MaterialTheme.colorScheme.tertiary
+                                    color = BrandColors.IconOrange
                                 )
                             }
                         }
@@ -174,7 +180,8 @@ fun BatchExecutionScreen(
                 Text(
                     text = "任务列表",
                     style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = BrandColors.TextDark
                 )
             }
 
@@ -208,7 +215,10 @@ fun BatchExecutionScreen(
                     } else {
                         Button(
                             onClick = { showConfirmDialog = true },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = BrandColors.PrimaryDeep
+                            )
                         ) {
                             Icon(Icons.Default.PlayArrow, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
@@ -241,7 +251,10 @@ fun BatchExecutionScreen(
                             failedCount = 0
                             progress = 0f
                             isRunning = true
-                        }
+                        },
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = BrandColors.PrimaryDeep
+                        )
                     ) {
                         Text("开始执行")
                     }
@@ -318,9 +331,9 @@ private fun BatchTaskItem(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = when {
-                isCurrentTask -> MaterialTheme.colorScheme.tertiaryContainer
-                isCompleted -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
-                else -> MaterialTheme.colorScheme.surfaceVariant
+                isCurrentTask -> CardColors.TaskItem
+                isCompleted -> CardColors.StatsMint.copy(alpha = 0.5f)
+                else -> CardColors.Default
             }
         )
     ) {
@@ -338,9 +351,9 @@ private fun BatchTaskItem(
                 },
                 contentDescription = null,
                 tint = when {
-                    isCompleted -> MaterialTheme.colorScheme.primary
-                    isCurrentTask -> MaterialTheme.colorScheme.tertiary
-                    else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    isCompleted -> BrandColors.PrimaryDeep
+                    isCurrentTask -> BrandColors.IconOrange
+                    else -> BrandColors.TextSecondary
                 }
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -348,18 +361,20 @@ private fun BatchTaskItem(
                 Text(
                     text = task.name,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = BrandColors.TextDark
                 )
                 Text(
                     text = task.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = BrandColors.TextSecondary
                 )
             }
             if (isRunning && isCurrentTask) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    strokeWidth = 2.dp
+                    strokeWidth = 2.dp,
+                    color = BrandColors.IconOrange
                 )
             }
         }

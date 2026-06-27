@@ -12,6 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.HeaderColors
+import com.terminator.android.ui.theme.CardColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,8 +56,8 @@ fun TemplateLibraryScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = HeaderColors.TemplateLibrary,
+                    titleContentColor = BrandColors.TextDark
                 )
             )
         }
@@ -110,7 +113,7 @@ fun TemplateLibraryScreen(
                     Text(
                         text = "共 ${filteredTemplates.size} 个模板",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = BrandColors.TextSecondary
                     )
                 }
             }
@@ -229,32 +232,33 @@ private fun TemplateLibraryCard(
                             else -> Icons.Default.Description
                         },
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = BrandColors.PrimaryDeep,
                         modifier = Modifier.size(32.dp)
                     )
                     Column {
                         Text(
                             text = template.name,
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = BrandColors.TextDark
                         )
                         Text(
                             text = template.category,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = BrandColors.TextSecondary
                         )
                     }
                 }
                 if (template.isPreset) {
                     Surface(
                         shape = MaterialTheme.shapes.small,
-                        color = MaterialTheme.colorScheme.primaryContainer
+                        color = CardColors.StatsMint
                     ) {
                         Text(
                             text = "预置",
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = BrandColors.PrimaryDeep
                         )
                     }
                 }
@@ -265,7 +269,7 @@ private fun TemplateLibraryCard(
             Text(
                 text = template.description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = BrandColors.TextSecondary
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -282,11 +286,12 @@ private fun TemplateLibraryCard(
                         Icons.Default.Timer,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = BrandColors.TextSecondary
                     )
                     Text(
                         text = "${template.estimatedMinutes}分钟",
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = BrandColors.TextSecondary
                     )
                 }
                 Row(
@@ -297,11 +302,12 @@ private fun TemplateLibraryCard(
                         Icons.Default.Star,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = BrandColors.IconOrange
                     )
                     Text(
                         text = "${template.rewardPoints}积分",
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = BrandColors.TextSecondary
                     )
                 }
                 Row(
@@ -312,11 +318,12 @@ private fun TemplateLibraryCard(
                         Icons.Default.Loop,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = BrandColors.TextSecondary
                     )
                     Text(
                         text = "${template.steps}步骤",
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = BrandColors.TextSecondary
                     )
                 }
             }
@@ -339,7 +346,10 @@ private fun TemplateLibraryCard(
 
             Button(
                 onClick = onUse,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BrandColors.PrimaryDeep
+                )
             ) {
                 Icon(Icons.Default.PlayArrow, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))

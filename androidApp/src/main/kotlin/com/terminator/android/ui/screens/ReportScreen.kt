@@ -1,8 +1,11 @@
 package com.terminator.android.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -12,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.CardColors
+import com.terminator.android.ui.theme.HeaderColors
 
 enum class ReportPeriod(val label: String) {
     DAILY("日报"),
@@ -104,43 +110,41 @@ fun ReportScreen(
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("数据报告") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Share, contentDescription = "分享")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            )
-        }
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
             item {
+                ReportHeader(onBack = onBack)
+            }
+
+            item {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     ReportPeriod.values().forEach { period ->
                         FilterChip(
                             selected = selectedPeriod == period,
                             onClick = { selectedPeriod = period },
-                            label = { Text(period.label) }
+                            label = {
+                                Text(
+                                    period.label,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = BrandColors.PrimaryDeep,
+                                selectedLabelColor = Color.White,
+                                containerColor = CardColors.QuickAction,
+                                labelColor = BrandColors.TextDark
+                            )
                         )
                     }
                 }
@@ -149,6 +153,53 @@ fun ReportScreen(
             items(sampleReports) { report ->
                 ReportCard(report)
             }
+
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReportHeader(onBack: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(130.dp)
+            .background(HeaderColors.Report)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+                .statusBarsPadding()
+        ) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Surface(
+                    modifier = Modifier.size(36.dp),
+                    shape = CircleShape,
+                    color = Color.White.copy(alpha = 0.3f)
+                ) {
+                    IconButton(onClick = onBack, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "返回",
+                            modifier = Modifier.size(20.dp),
+                            tint = BrandColors.TextDark
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = "数据报告",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = BrandColors.TextDark
+                )
+            }
         }
     }
 }
@@ -156,20 +207,25 @@ fun ReportScreen(
 @Composable
 private fun ReportCard(report: ReportSummary) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
             text = report.date,
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = BrandColors.TextDark
         )
 
         Card(
             modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
+                containerColor = CardColors.StatsMint
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -179,7 +235,8 @@ private fun ReportCard(report: ReportSummary) {
                 Text(
                     text = "保护概览",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = BrandColors.TextDark
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -189,14 +246,19 @@ private fun ReportCard(report: ReportSummary) {
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     ReportStatItem("🛡️", "拦截风险", "${report.riskEvents} 次")
-                    ReportStatItem("⚠️", "消费预警", "${report.totalWarnings} 次")
+                    ReportStatItem("️", "消费预警", "${report.totalWarnings} 次")
                     ReportStatItem("✅", "完成任务", "${report.completedTasks}/${report.totalTasks}")
                 }
             }
         }
 
         Card(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = CardColors.TaskItem
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -211,13 +273,14 @@ private fun ReportCard(report: ReportSummary) {
                     Text(
                         text = "消费统计",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = BrandColors.TextDark
                     )
                     Text(
                         text = "¥%.2f".format(report.totalConsumption),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.error
+                        color = BrandColors.PrimaryDeep
                     )
                 }
 
@@ -231,7 +294,12 @@ private fun ReportCard(report: ReportSummary) {
         }
 
         Card(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -241,7 +309,8 @@ private fun ReportCard(report: ReportSummary) {
                 Text(
                     text = "任务完成率",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = BrandColors.TextDark
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -255,7 +324,8 @@ private fun ReportCard(report: ReportSummary) {
                         report.taskCompletionRate >= 0.8f -> Color(0xFF388E3C)
                         report.taskCompletionRate >= 0.6f -> Color(0xFFFFA000)
                         else -> Color(0xFFD32F2F)
-                    }
+                    },
+                    trackColor = Color(0xFFE8F5E9)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -267,12 +337,10 @@ private fun ReportCard(report: ReportSummary) {
                         report.totalTasks
                     ),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = BrandColors.TextSecondary
                 )
             }
         }
-
-        HorizontalDivider()
     }
 }
 
@@ -282,8 +350,17 @@ private fun ReportStatItem(icon: String, label: String, value: String) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = icon, style = MaterialTheme.typography.headlineMedium)
-        Text(text = value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-        Text(text = label, style = MaterialTheme.typography.bodySmall)
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = BrandColors.TextDark
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = BrandColors.TextSecondary
+        )
     }
 }
 
@@ -296,14 +373,17 @@ private fun AppConsumptionRow(app: AppConsumptionData) {
         Text(
             text = app.appName,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            color = BrandColors.TextDark
         )
 
         LinearProgressIndicator(
             progress = { app.percentage },
             modifier = Modifier
                 .width(100.dp)
-                .height(8.dp)
+                .height(8.dp),
+            color = BrandColors.PrimaryDeep,
+            trackColor = Color(0xFFE8F5E9)
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -311,7 +391,8 @@ private fun AppConsumptionRow(app: AppConsumptionData) {
         Text(
             text = "¥%.2f".format(app.amount),
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = BrandColors.TextDark
         )
     }
 }

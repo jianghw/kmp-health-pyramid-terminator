@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.HeaderColors
+import com.terminator.android.ui.theme.CardColors
 import com.terminator.shared.model.CredentialStatus
 import com.terminator.shared.model.CredentialType
 
@@ -35,8 +38,8 @@ fun CredentialListScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = HeaderColors.CredentialList,
+                    titleContentColor = BrandColors.TextDark
                 )
             )
         },
@@ -61,17 +64,17 @@ fun CredentialListScreen(
                         Icons.Default.Lock,
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = BrandColors.TextSecondary
                     )
                     Text(
                         text = "暂无凭证",
                         style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = BrandColors.TextSecondary
                     )
                     Text(
                         text = "点击右下角按钮添加应用凭证",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = BrandColors.TextSecondary
                     )
                 }
             }
@@ -87,7 +90,8 @@ fun CredentialListScreen(
                     Text(
                         text = "已保存的凭证",
                         style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = BrandColors.TextDark
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
@@ -162,18 +166,19 @@ private fun CredentialCard(
                             else -> Icons.Default.Lock
                         },
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = BrandColors.PrimaryDeep
                     )
                     Column {
                         Text(
                             text = credential.appName,
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = BrandColors.TextDark
                         )
                         Text(
                             text = credential.alias,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = BrandColors.TextSecondary
                         )
                     }
                 }
@@ -227,7 +232,7 @@ private fun CredentialCard(
                 Text(
                     text = "上次使用: ${credential.lastUsedAt}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = BrandColors.TextSecondary
                 )
             }
         }
@@ -237,10 +242,10 @@ private fun CredentialCard(
 @Composable
 private fun CredentialStatusChip(status: String) {
     val (color, text) = when (status) {
-        "ACTIVE" -> MaterialTheme.colorScheme.primary to "有效"
-        "EXPIRED" -> MaterialTheme.colorScheme.tertiary to "已过期"
+        "ACTIVE" -> BrandColors.PrimaryDeep to "有效"
+        "EXPIRED" -> BrandColors.IconOrange to "已过期"
         "INVALID" -> MaterialTheme.colorScheme.error to "无效"
-        else -> MaterialTheme.colorScheme.onSurfaceVariant to status
+        else -> BrandColors.TextSecondary to status
     }
 
     Surface(

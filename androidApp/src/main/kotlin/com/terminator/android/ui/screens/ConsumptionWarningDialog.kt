@@ -13,6 +13,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.HeaderColors
+import com.terminator.android.ui.theme.CardColors
 
 enum class WarningDialogLevel { LOW, MEDIUM, HIGH, CRITICAL }
 
@@ -38,7 +41,7 @@ fun ConsumptionWarningDialog(
                     .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = BrandColors.CardBg
                 )
             ) {
                 Column(
@@ -70,7 +73,8 @@ fun ConsumptionWarningDialog(
                         text = warningData.title,
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = BrandColors.TextDark
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -79,7 +83,7 @@ fun ConsumptionWarningDialog(
                         text = warningData.message,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = BrandColors.TextSecondary
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -87,7 +91,7 @@ fun ConsumptionWarningDialog(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            containerColor = CardColors.StatsMint
                         )
                     ) {
                         Column(
@@ -101,13 +105,14 @@ fun ConsumptionWarningDialog(
                             ) {
                                 Text(
                                     text = "当前金额",
-                                    style = MaterialTheme.typography.bodyMedium
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = BrandColors.TextDark
                                 )
                                 Text(
                                     text = "¥%.2f".format(warningData.currentAmount),
                                     style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.error
+                                    color = BrandColors.IconRed
                                 )
                             }
 
@@ -119,12 +124,14 @@ fun ConsumptionWarningDialog(
                             ) {
                                 Text(
                                     text = "预警阈值",
-                                    style = MaterialTheme.typography.bodyMedium
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = BrandColors.TextDark
                                 )
                                 Text(
                                     text = "¥%.2f".format(warningData.thresholdAmount),
                                     style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
+                                    color = BrandColors.TextDark
                                 )
                             }
                         }
@@ -148,10 +155,10 @@ fun ConsumptionWarningDialog(
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = when (warningData.level) {
-                                    WarningDialogLevel.CRITICAL -> Color(0xFFD32F2F)
-                                    WarningDialogLevel.HIGH -> Color(0xFFF57C00)
+                                    WarningDialogLevel.CRITICAL -> BrandColors.IconRed
+                                    WarningDialogLevel.HIGH -> BrandColors.IconOrange
                                     WarningDialogLevel.MEDIUM -> Color(0xFFFFA000)
-                                    WarningDialogLevel.LOW -> MaterialTheme.colorScheme.primary
+                                    WarningDialogLevel.LOW -> BrandColors.PrimaryDeep
                                 }
                             )
                         ) {
@@ -205,8 +212,8 @@ fun WarningListScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = HeaderColors.Warning,
+                    titleContentColor = Color.White
                 )
             )
         }
@@ -220,7 +227,8 @@ fun WarningListScreen(
             Text(
                 text = "最近预警",
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = BrandColors.TextDark
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -285,7 +293,7 @@ private fun WarningListItem(
                 Text(
                     text = "当前 ¥%.2f / 阈值 ¥%.2f".format(warning.currentAmount, warning.thresholdAmount),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = BrandColors.TextSecondary
                 )
             }
 

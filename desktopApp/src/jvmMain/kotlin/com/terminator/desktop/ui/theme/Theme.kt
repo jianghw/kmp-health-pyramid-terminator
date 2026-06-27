@@ -1,18 +1,19 @@
-package com.terminator.android.ui.theme
+package com.terminator.desktop.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 // ==========================================
-// 品牌色系统 — 薅羊毛终结者
+// 品牌色系统 — 薅羊毛终结者（桌面版）
 // ==========================================
 // 设计理念：深翠绿主色 → 专业信任感
 // 强调色：琥珀橙 → 温暖引导注意力
@@ -57,12 +58,12 @@ object HeaderColors {
     val Notification = Color(0xFF6366F1)          // 通知中心 - 靛蓝紫
     val Report = Color(0xFF059669)               // 数据报告 - 翠绿
     val Warning = Color(0xFFD97706)              // 消费预警 - 琥珀橙
-    val BatchExecution = Color(0xFF1E40AF)       // 批量执行 - 靛蓝
-    val AIConfig = Color(0xFF6366F1)             // AI配置 - 靛蓝紫
-    val CredentialInput = Color(0xFF0D9488)      // 凭证输入 - 翡翠
-    val CredentialList = Color(0xFF0D9488)       // 凭证列表 - 翡翠
-    val QuestionBank = Color(0xFF8B5CF6)         // 题库管理 - 紫色
-    val TemplateLibrary = Color(0xFFEC4899)      // 模板库 - 粉色
+    val AIConfig = Color(0xFF7C3AED)              // AI配置 - 紫色
+    val BatchExecution = Color(0xFF1E40AF)        // 批量执行 - 靛蓝
+    val CredentialList = Color(0xFF0D7C5F)        // 凭证管理 - 深翠绿
+    val CredentialInput = Color(0xFF0D7C5F)       // 凭证输入 - 深翠绿
+    val TemplateLibrary = Color(0xFF059669)       // 模板库 - 翠绿
+    val QuestionBank = Color(0xFF6366F1)          // 题库管理 - 靛蓝紫
 }
 
 object CardColors {
@@ -76,7 +77,7 @@ object CardColors {
 // Material 3 配色方案
 // ==========================================
 
-private val ElderlyFriendlyLightColorScheme = lightColorScheme(
+private val LightColorScheme = lightColorScheme(
     primary = BrandColors.PrimaryDeep,
     onPrimary = Color.White,
     primaryContainer = BrandColors.PrimaryLight,
@@ -103,7 +104,7 @@ private val ElderlyFriendlyLightColorScheme = lightColorScheme(
     outlineVariant = Color(0xFFBFCCB6),
 )
 
-private val ElderlyFriendlyDarkColorScheme = darkColorScheme(
+private val DarkColorScheme = darkColorScheme(
     primary = Color(0xFF6EE7B7),
     onPrimary = Color(0xFF003826),
     primaryContainer = BrandColors.PrimaryDeep,
@@ -130,96 +131,113 @@ private val ElderlyFriendlyDarkColorScheme = darkColorScheme(
     outlineVariant = Color(0xFF3F4F47),
 )
 
-// Header 渐变色（用于自定义渐变 Header）
-object HeaderGradients {
-    val DashboardStart = Color(0xFF059669)
-    val DashboardEnd = Color(0xFF0D7C5F)
+// ==========================================
+// 字体排版
+// ==========================================
 
-    val OneTapStart = Color(0xFF1E40AF)
-    val OneTapEnd = Color(0xFF3730A3)
-
-    val ProtectionStart = Color(0xFFDC2626)
-    val ProtectionEnd = Color(0xFF991B1B)
-
-    val ProfileStart = Color(0xFF0D9488)
-    val ProfileEnd = Color(0xFF0F766E)
-}
-
-private val HighContrastLightColorScheme = lightColorScheme(
-    primary = Color(0xFF004D40),
-    onPrimary = Color.White,
-    primaryContainer = BrandColors.PrimaryDeep,
-    onPrimaryContainer = Color.White,
-    secondary = Color(0xFF1A1A1A),
-    onSecondary = Color.White,
-    secondaryContainer = Color(0xFF333333),
-    onSecondaryContainer = Color.White,
-    tertiary = Color(0xFF92400E),
-    onTertiary = Color.White,
-    tertiaryContainer = BrandColors.IconOrange,
-    onTertiaryContainer = Color.White,
-    error = Color(0xFF8B0000),
-    onError = Color.White,
-    errorContainer = BrandColors.IconRed,
-    onErrorContainer = Color.White,
-    background = Color.White,
-    onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black,
-    surfaceVariant = Color(0xFFE0E0E0),
-    onSurfaceVariant = Color(0xFF1A1A1A),
-    outline = Color.Black,
-    outlineVariant = Color(0xFF333333),
-)
-
-private val HighContrastDarkColorScheme = darkColorScheme(
-    primary = Color(0xFFA7F3D0),
-    onPrimary = Color.Black,
-    primaryContainer = Color(0xFF6EE7B7),
-    onPrimaryContainer = Color.Black,
-    secondary = Color(0xFFE0E0E0),
-    onSecondary = Color.Black,
-    secondaryContainer = Color(0xFFB0BEC5),
-    onSecondaryContainer = Color.Black,
-    tertiary = Color(0xFFFDE68A),
-    onTertiary = Color.Black,
-    tertiaryContainer = Color(0xFFFBBF24),
-    onTertiaryContainer = Color.Black,
-    error = Color(0xFFFFCDD2),
-    onError = Color.Black,
-    errorContainer = Color(0xFFFCA5A5),
-    onErrorContainer = Color.Black,
-    background = Color.Black,
-    onBackground = Color.White,
-    surface = Color.Black,
-    onSurface = Color.White,
-    surfaceVariant = Color(0xFF333333),
-    onSurfaceVariant = Color(0xFFE0E0E0),
-    outline = Color.White,
-    outlineVariant = Color(0xFFCCCCCC),
+val DesktopTypography = Typography(
+    displayLarge = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 57.sp,
+        lineHeight = 64.sp,
+        letterSpacing = (-0.25).sp
+    ),
+    displayMedium = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 45.sp,
+        lineHeight = 52.sp,
+        letterSpacing = 0.sp
+    ),
+    displaySmall = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 36.sp,
+        lineHeight = 44.sp,
+        letterSpacing = 0.sp
+    ),
+    headlineLarge = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        letterSpacing = 0.sp
+    ),
+    headlineMedium = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+        lineHeight = 36.sp,
+        letterSpacing = 0.sp
+    ),
+    headlineSmall = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+        lineHeight = 32.sp,
+        letterSpacing = 0.sp
+    ),
+    titleLarge = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    titleMedium = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.15.sp
+    ),
+    titleSmall = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp
+    ),
+    bodyLarge = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    bodyMedium = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp
+    ),
+    bodySmall = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.4.sp
+    ),
+    labelLarge = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp
+    ),
+    labelMedium = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
+    labelSmall = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    )
 )
 
 @Composable
 fun TerminatorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,  // 关闭动态颜色，确保自定义配色生效
-    highContrast: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        highContrast && darkTheme -> HighContrastDarkColorScheme
-        highContrast -> HighContrastLightColorScheme
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> ElderlyFriendlyDarkColorScheme
-        else -> ElderlyFriendlyLightColorScheme
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = ElderlyTypography,
+        typography = DesktopTypography,
         content = content
     )
 }

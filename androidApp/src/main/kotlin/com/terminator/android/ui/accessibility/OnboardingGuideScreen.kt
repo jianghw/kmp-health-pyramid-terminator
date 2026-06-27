@@ -25,6 +25,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.HeaderColors
 
 data class GuideStep(
     val icon: ImageVector,
@@ -79,7 +81,7 @@ fun OnboardingGuideScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.6f)),
+            .background(HeaderColors.Dashboard),
         contentAlignment = Alignment.Center
     ) {
         Card(
@@ -89,6 +91,9 @@ fun OnboardingGuideScreen(
                     contentDescription = "新手引导，第${currentStep + 1}步，共${steps.size}步。${step.contentDescription}"
                 },
             shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = androidx.compose.ui.graphics.Color.White
+            ),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
@@ -108,8 +113,8 @@ fun OnboardingGuideScreen(
                                 .size(if (index == currentStep) 12.dp else 8.dp)
                                 .clip(CircleShape)
                                 .background(
-                                    if (index == currentStep) MaterialTheme.colorScheme.primary
-                                    else MaterialTheme.colorScheme.outlineVariant
+                                    if (index == currentStep) BrandColors.PrimaryDeep
+                                    else BrandColors.TextSecondary.copy(alpha = 0.3f)
                                 )
                                 .semantics {
                                     contentDescription = if (index == currentStep) "当前步骤${index + 1}" else "步骤${index + 1}"
@@ -122,14 +127,14 @@ fun OnboardingGuideScreen(
                     modifier = Modifier
                         .size(80.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
+                        .background(BrandColors.PrimaryLight),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = step.icon,
                         contentDescription = null,
                         modifier = Modifier.size(40.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = BrandColors.PrimaryDeep
                     )
                 }
 
@@ -138,21 +143,21 @@ fun OnboardingGuideScreen(
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = BrandColors.TextDark
                 )
 
                 Text(
                     text = step.description,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = BrandColors.TextSecondary,
                     lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
                 )
 
                 Text(
                     text = "${currentStep + 1} / ${steps.size}",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.outline,
+                    color = BrandColors.TextSecondary,
                     modifier = Modifier.semantics {
                         contentDescription = "步骤${currentStep + 1}，共${steps.size}步"
                     }
@@ -184,7 +189,10 @@ fun OnboardingGuideScreen(
                             },
                             modifier = Modifier.semantics {
                                 contentDescription = "开始使用应用"
-                            }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = BrandColors.PrimaryDeep
+                            )
                         ) {
                             Text("开始使用")
                             Spacer(modifier = Modifier.width(8.dp))
@@ -195,7 +203,10 @@ fun OnboardingGuideScreen(
                             onClick = { currentStep++ },
                             modifier = Modifier.semantics {
                                 contentDescription = "下一步"
-                            }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = BrandColors.PrimaryDeep
+                            )
                         ) {
                             Text("下一步")
                             Spacer(modifier = Modifier.width(8.dp))

@@ -1,4 +1,4 @@
-package com.terminator.android.ui.screens
+package com.terminator.desktop.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,15 +13,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.terminator.android.ui.theme.BrandColors
-import com.terminator.android.ui.theme.CardColors
-import com.terminator.android.ui.theme.HeaderGradients
+import com.terminator.desktop.ui.theme.BrandColors
+import com.terminator.desktop.ui.theme.CardColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,9 +26,9 @@ fun DashboardScreen(
     onNavigateToTasks: () -> Unit,
     onNavigateToProtection: () -> Unit,
     onNavigateToProfile: () -> Unit,
-    onNavigateToWarnings: () -> Unit = {},
-    onNavigateToNotifications: () -> Unit = {},
-    onNavigateToReports: () -> Unit = {}
+    onNavigateToNotifications: () -> Unit,
+    onNavigateToReports: () -> Unit,
+    onNavigateToWarnings: () -> Unit
 ) {
     Scaffold(
         containerColor = BrandColors.SurfaceBg
@@ -40,212 +37,152 @@ fun DashboardScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            verticalArrangement = Arrangement.spacedBy(0.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // ==========================================
-            // 顶部渐变 Header 区域
-            // ==========================================
+            // 顶部 Header
             item {
                 DashboardHeader()
             }
 
-            // ==========================================
-            // 今日保护数据卡片（悬浮效果）
-            // ==========================================
+            // 今日保护数据卡片
             item {
                 TodayStatsCard(
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                        .offset(y = (-20).dp)
+                    modifier = Modifier.padding(horizontal = 24.dp)
                 )
             }
 
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-
-            // ==========================================
             // 快捷操作区域
-            // ==========================================
             item {
-                Text(
-                    text = "快捷操作",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = BrandColors.TextDark,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
-
-            item { Spacer(modifier = Modifier.height(10.dp)) }
-
-            // 第一行：一键执行 + 查看报告
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    QuickActionCard(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Default.PlayArrow,
-                        label = "一键执行",
-                        subtitle = "自动完成任务",
-                        color = BrandColors.PrimaryDeep,
-                        bgColor = BrandColors.PrimaryBg,
-                        onClick = onNavigateToTasks
-                    )
-                    QuickActionCard(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Default.BarChart,
-                        label = "查看报告",
-                        subtitle = "数据分析",
-                        color = BrandColors.IconBlue,
-                        bgColor = BrandColors.IconBlueBg,
-                        onClick = onNavigateToReports
-                    )
-                }
-            }
-
-            // 第二行间距
-            item { Spacer(modifier = Modifier.height(10.dp)) }
-
-            // 第二行：消费预警 + 通知中心
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    QuickActionCard(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Default.Warning,
-                        label = "消费预警",
-                        subtitle = "风险提醒",
-                        color = BrandColors.IconOrange,
-                        bgColor = BrandColors.IconOrangeBg,
-                        onClick = onNavigateToWarnings
-                    )
-                    QuickActionCard(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Default.Notifications,
-                        label = "通知中心",
-                        subtitle = "消息推送",
-                        color = BrandColors.IconPurple,
-                        bgColor = BrandColors.IconPurpleBg,
-                        onClick = onNavigateToNotifications
-                    )
-                }
-            }
-
-            item { Spacer(modifier = Modifier.height(20.dp)) }
-
-            // ==========================================
-            // 应用任务列表
-            // ==========================================
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp)
                 ) {
                     Text(
-                        text = "应用任务列表",
+                        text = "快捷操作",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = BrandColors.TextDark
                     )
-                    TextButton(onClick = onNavigateToTasks) {
-                        Text(
-                            "查看全部",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = BrandColors.PrimaryDeep
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        QuickActionCard(
+                            modifier = Modifier.weight(1f),
+                            icon = Icons.Default.PlayArrow,
+                            label = "一键执行",
+                            subtitle = "自动完成任务",
+                            color = BrandColors.PrimaryDeep,
+                            bgColor = BrandColors.PrimaryBg,
+                            onClick = onNavigateToTasks
                         )
-                        Icon(
-                            Icons.Default.ChevronRight,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            tint = BrandColors.PrimaryDeep
+                        QuickActionCard(
+                            modifier = Modifier.weight(1f),
+                            icon = Icons.Default.BarChart,
+                            label = "查看报告",
+                            subtitle = "数据分析",
+                            color = BrandColors.IconBlue,
+                            bgColor = BrandColors.IconBlueBg,
+                            onClick = onNavigateToReports
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        QuickActionCard(
+                            modifier = Modifier.weight(1f),
+                            icon = Icons.Default.Warning,
+                            label = "消费预警",
+                            subtitle = "风险提醒",
+                            color = BrandColors.IconOrange,
+                            bgColor = BrandColors.IconOrangeBg,
+                            onClick = onNavigateToWarnings
+                        )
+                        QuickActionCard(
+                            modifier = Modifier.weight(1f),
+                            icon = Icons.Default.Notifications,
+                            label = "通知中心",
+                            subtitle = "消息推送",
+                            color = BrandColors.IconPurple,
+                            bgColor = BrandColors.IconPurpleBg,
+                            onClick = onNavigateToNotifications
                         )
                     }
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(8.dp)) }
+            // 应用任务列表
+            item {
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "应用任务列表",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = BrandColors.TextDark
+                        )
+                        TextButton(onClick = onNavigateToTasks) {
+                            Text(
+                                "查看全部",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = BrandColors.PrimaryDeep
+                            )
+                            Icon(
+                                Icons.Default.ChevronRight,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = BrandColors.PrimaryDeep
+                            )
+                        }
+                    }
+                }
+            }
 
             items(getSampleTasks()) { task ->
                 ModernTaskItem(
                     task = task,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
                 )
             }
 
             // 底部间距
             item {
-                Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }
 }
 
-// ==========================================
-// 渐变 Header 组件
-// ==========================================
 @Composable
 private fun DashboardHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        HeaderGradients.DashboardStart,
-                        HeaderGradients.DashboardEnd
-                    ),
-                    start = Offset(0f, Float.POSITIVE_INFINITY),
-                    end = Offset(Float.POSITIVE_INFINITY, 0f)
-                )
-            )
+            .height(180.dp)
+            .background(BrandColors.PrimaryDeep)
     ) {
-        // 顶部装饰圆 — 增加层次感
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .offset(x = 40.dp, y = (-20).dp)
-                .size(120.dp)
-                .background(
-                    Color.White.copy(alpha = 0.08f),
-                    CircleShape
-                )
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .offset(x = (-30).dp, y = 40.dp)
-                .size(80.dp)
-                .background(
-                    Color.White.copy(alpha = 0.05f),
-                    CircleShape
-                )
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .statusBarsPadding()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 品牌名称行
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Logo 图标
                 Surface(
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(48.dp),
                     shape = RoundedCornerShape(12.dp),
                     color = Color.White.copy(alpha = 0.2f)
                 ) {
@@ -253,13 +190,13 @@ private fun DashboardHeader() {
                         Icon(
                             Icons.Default.Shield,
                             contentDescription = null,
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(28.dp),
                             tint = Color.White
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
                 Column {
                     Text(
@@ -270,16 +207,15 @@ private fun DashboardHeader() {
                     )
                     Text(
                         text = "智能任务管家，守护每一天",
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = Color.White.copy(alpha = 0.8f)
                     )
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // 通知按钮
                 Surface(
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(48.dp),
                     shape = CircleShape,
                     color = Color.White.copy(alpha = 0.15f)
                 ) {
@@ -287,16 +223,15 @@ private fun DashboardHeader() {
                         Icon(
                             Icons.Default.Notifications,
                             contentDescription = "通知",
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(24.dp),
                             tint = Color.White
                         )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // 底部标题
             Text(
                 text = "今日保护状态",
                 style = MaterialTheme.typography.titleMedium,
@@ -306,9 +241,6 @@ private fun DashboardHeader() {
     }
 }
 
-// ==========================================
-// 今日保护统计卡片（悬浮阴影效果）
-// ==========================================
 @Composable
 private fun TodayStatsCard(modifier: Modifier = Modifier) {
     Card(
@@ -328,7 +260,7 @@ private fun TodayStatsCard(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp),
+                .padding(vertical = 24.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             StatCircleItem(
@@ -368,7 +300,7 @@ private fun StatCircleItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(56.dp),
             shape = CircleShape,
             color = bgColor
         ) {
@@ -376,12 +308,12 @@ private fun StatCircleItem(
                 Icon(
                     icon,
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(28.dp),
                     tint = iconColor
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = value,
             style = MaterialTheme.typography.headlineSmall,
@@ -390,15 +322,12 @@ private fun StatCircleItem(
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelMedium,
             color = BrandColors.TextSecondary
         )
     }
 }
 
-// ==========================================
-// 快捷操作卡片（修复间距）
-// ==========================================
 @Composable
 private fun QuickActionCard(
     modifier: Modifier = Modifier,
@@ -410,22 +339,22 @@ private fun QuickActionCard(
     onClick: () -> Unit
 ) {
     Card(
-        modifier = modifier.height(72.dp),
+        modifier = modifier.height(80.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = BrandColors.CardBg
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         onClick = onClick
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
+                .padding(horizontal = 20.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
-                modifier = Modifier.size(44.dp),
+                modifier = Modifier.size(48.dp),
                 shape = RoundedCornerShape(12.dp),
                 color = bgColor
             ) {
@@ -433,22 +362,22 @@ private fun QuickActionCard(
                     Icon(
                         icon,
                         contentDescription = null,
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(24.dp),
                         tint = color
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
                     text = label,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = BrandColors.TextDark
                 )
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = BrandColors.TextSecondary
                 )
             }
@@ -456,9 +385,6 @@ private fun QuickActionCard(
     }
 }
 
-// ==========================================
-// 现代化任务列表项
-// ==========================================
 @Composable
 private fun ModernTaskItem(
     task: SampleTask,
@@ -470,45 +396,43 @@ private fun ModernTaskItem(
         colors = CardDefaults.cardColors(
             containerColor = BrandColors.CardBg
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 应用图标
             Surface(
-                modifier = Modifier.size(44.dp),
+                modifier = Modifier.size(48.dp),
                 shape = RoundedCornerShape(12.dp),
                 color = CardColors.StatsMint
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
                         text = task.icon,
-                        fontSize = 22.sp
+                        fontSize = 24.sp
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = task.name,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = BrandColors.TextDark
                 )
                 Text(
                     text = task.description,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = BrandColors.TextSecondary
                 )
             }
 
-            // 状态标签
             Surface(
                 shape = RoundedCornerShape(20.dp),
                 color = when (task.status) {
@@ -519,8 +443,8 @@ private fun ModernTaskItem(
             ) {
                 Text(
                     text = task.status,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = when (task.status) {
                         "已完成" -> BrandColors.Primary

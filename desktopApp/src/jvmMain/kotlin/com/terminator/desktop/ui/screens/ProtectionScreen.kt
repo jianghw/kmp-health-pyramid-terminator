@@ -1,4 +1,4 @@
-package com.terminator.android.ui.screens
+package com.terminator.desktop.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,48 +13,42 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.terminator.android.ui.theme.BrandColors
-import com.terminator.android.ui.theme.CardColors
-import com.terminator.android.ui.theme.HeaderColors
-import com.terminator.android.ui.theme.HeaderGradients
+import com.terminator.desktop.ui.theme.BrandColors
+import com.terminator.desktop.ui.theme.CardColors
+import com.terminator.desktop.ui.theme.HeaderColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProtectionScreen(
-    onBack: () -> Unit
+    onNavigateBack: () -> Unit
 ) {
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = BrandColors.SurfaceBg
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            verticalArrangement = Arrangement.spacedBy(0.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                ProtectionHeader(onBack = onBack)
+                ProtectionHeader(onBack = onNavigateBack)
             }
 
             item {
                 RiskSummaryCard(
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                        .offset(y = (-20).dp)
+                    modifier = Modifier.padding(horizontal = 24.dp)
                 )
             }
-
-            item { Spacer(modifier = Modifier.height(4.dp)) }
 
             item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 24.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -83,7 +77,7 @@ fun ProtectionScreen(
             items(getSampleRiskEvents()) { event ->
                 RiskEventCard(
                     event = event,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
                 )
             }
 
@@ -99,58 +93,31 @@ private fun ProtectionHeader(onBack: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        HeaderGradients.ProtectionStart,
-                        HeaderGradients.ProtectionEnd
-                    ),
-                    start = Offset(0f, Float.POSITIVE_INFINITY),
-                    end = Offset(Float.POSITIVE_INFINITY, 0f)
-                )
-            )
+            .height(160.dp)
+            .background(HeaderColors.Protection)
     ) {
-        // 装饰圆
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset(x = 40.dp, y = 20.dp)
-                .size(90.dp)
-                .background(Color.White.copy(alpha = 0.06f), CircleShape)
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .offset(x = 60.dp, y = (-30).dp)
-                .size(70.dp)
-                .background(Color.White.copy(alpha = 0.04f), CircleShape)
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .statusBarsPadding()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(40.dp),
                     shape = CircleShape,
                     color = Color.White.copy(alpha = 0.15f)
                 ) {
-                    IconButton(onClick = onBack, modifier = Modifier.size(36.dp)) {
+                    IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(22.dp),
                             tint = Color.White
                         )
                     }
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = "风险保护",
                     style = MaterialTheme.typography.titleLarge,
@@ -159,11 +126,11 @@ private fun ProtectionHeader(onBack: () -> Unit) {
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(44.dp),
                     shape = RoundedCornerShape(10.dp),
                     color = Color.White.copy(alpha = 0.2f)
                 ) {
@@ -171,12 +138,12 @@ private fun ProtectionHeader(onBack: () -> Unit) {
                         Icon(
                             Icons.Default.Security,
                             contentDescription = null,
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(26.dp),
                             tint = Color.White
                         )
                     }
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
                         text = "实时风险监控",
@@ -187,12 +154,10 @@ private fun ProtectionHeader(onBack: () -> Unit) {
                     Text(
                         text = "为您拦截潜在的消费风险",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.White.copy(alpha = 0.7f)
+                        color = Color.White.copy(alpha = 0.8f)
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -216,7 +181,7 @@ private fun RiskSummaryCard(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp),
+                .padding(vertical = 24.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             RiskLevelItem(
@@ -254,7 +219,7 @@ private fun RiskLevelItem(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Surface(
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(56.dp),
             shape = CircleShape,
             color = bgColor
         ) {
@@ -262,12 +227,12 @@ private fun RiskLevelItem(
                 Icon(
                     icon,
                     contentDescription = null,
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(26.dp),
                     tint = color
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = count,
             style = MaterialTheme.typography.headlineSmall,
@@ -276,7 +241,7 @@ private fun RiskLevelItem(
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelMedium,
             color = BrandColors.TextSecondary
         )
     }
@@ -298,11 +263,11 @@ private fun RiskEventCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
-                modifier = Modifier.size(44.dp),
+                modifier = Modifier.size(48.dp),
                 shape = RoundedCornerShape(12.dp),
                 color = when (event.severity) {
                     "高" -> Color(0xFFFEF2F2)
@@ -318,7 +283,7 @@ private fun RiskEventCard(
                             else -> Icons.Default.Info
                         },
                         contentDescription = null,
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(24.dp),
                         tint = when (event.severity) {
                             "高" -> Color(0xFFDC2626)
                             "中" -> Color(0xFFD97706)
@@ -328,23 +293,23 @@ private fun RiskEventCard(
                 }
             }
 
-            Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = event.title,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = BrandColors.TextDark
                 )
                 Text(
                     text = event.description,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = BrandColors.TextSecondary
                 )
                 Text(
                     text = event.time,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = BrandColors.TextSecondary.copy(alpha = 0.7f)
                 )
             }
@@ -359,8 +324,8 @@ private fun RiskEventCard(
             ) {
                 Text(
                     text = event.severity,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                     color = when (event.severity) {
                         "高" -> Color(0xFFDC2626)

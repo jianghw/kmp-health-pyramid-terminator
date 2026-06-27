@@ -1,4 +1,4 @@
-package com.terminator.android.ui.screens
+package com.terminator.desktop.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.terminator.android.ui.theme.BrandColors
-import com.terminator.android.ui.theme.CardColors
-import com.terminator.android.ui.theme.HeaderColors
+import com.terminator.desktop.ui.theme.BrandColors
+import com.terminator.desktop.ui.theme.CardColors
+import com.terminator.desktop.ui.theme.HeaderColors
 
 data class NotificationItem(
     val id: Long,
@@ -39,7 +39,7 @@ enum class NotificationItemType(val icon: String, val color: Color) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationScreen(
-    onBack: () -> Unit
+    onNavigateBack: () -> Unit
 ) {
     var unreadCount by remember { mutableIntStateOf(3) }
 
@@ -97,23 +97,23 @@ fun NotificationScreen(
     }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = BrandColors.SurfaceBg
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            verticalArrangement = Arrangement.spacedBy(0.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                NotificationHeader(onBack = onBack, unreadCount = unreadCount)
+                NotificationHeader(onBack = onNavigateBack, unreadCount = unreadCount)
             }
 
             item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                        .padding(horizontal = 24.dp, vertical = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -155,49 +155,47 @@ private fun NotificationHeader(onBack: () -> Unit, unreadCount: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(130.dp)
+            .height(140.dp)
             .background(HeaderColors.Notification)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .statusBarsPadding()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(40.dp),
                     shape = CircleShape,
-                    color = Color.White.copy(alpha = 0.3f)
+                    color = Color.White.copy(alpha = 0.15f)
                 ) {
-                    IconButton(onClick = onBack, modifier = Modifier.size(36.dp)) {
+                    IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            modifier = Modifier.size(20.dp),
-                            tint = BrandColors.TextDark
+                            modifier = Modifier.size(22.dp),
+                            tint = Color.White
                         )
                     }
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = "通知中心",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = BrandColors.TextDark
+                    color = Color.White
                 )
                 if (unreadCount > 0) {
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Surface(
                         shape = RoundedCornerShape(10.dp),
                         color = Color(0xFFDC2626)
                     ) {
                         Text(
                             text = "$unreadCount",
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -217,7 +215,7 @@ private fun NotificationListItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = 24.dp, vertical = 4.dp),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (notification.isRead) Color.White else CardColors.TaskItem
@@ -228,7 +226,7 @@ private fun NotificationListItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
+                .padding(16.dp),
             verticalAlignment = Alignment.Top
         ) {
             Text(
@@ -236,7 +234,7 @@ private fun NotificationListItem(
                 style = MaterialTheme.typography.headlineMedium
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             Column(
                 modifier = Modifier.weight(1f)
@@ -248,20 +246,20 @@ private fun NotificationListItem(
                 ) {
                     Text(
                         text = notification.title,
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
                         color = BrandColors.TextDark
                     )
                     if (!notification.isRead) {
                         Surface(
-                            modifier = Modifier.size(8.dp),
+                            modifier = Modifier.size(10.dp),
                             shape = CircleShape,
                             color = notification.type.color
                         ) {}
                     }
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
                     text = notification.body,
@@ -270,11 +268,11 @@ private fun NotificationListItem(
                     maxLines = 2
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
                     text = notification.time,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = BrandColors.TextSecondary.copy(alpha = 0.7f)
                 )
             }

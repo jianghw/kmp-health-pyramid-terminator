@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.terminator.android.ui.theme.BrandColors
+import com.terminator.android.ui.theme.HeaderColors
+import com.terminator.android.ui.theme.CardColors
 
 /**
  * 题库项数据类 - 用于在UI中展示题库的基本信息
@@ -127,7 +130,11 @@ fun QuestionBankScreen(
                     }) {
                         Icon(Icons.Default.Add, contentDescription = "添加")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = HeaderColors.QuestionBank,
+                    titleContentColor = BrandColors.TextDark
+                )
             )
         }
     ) { paddingValues ->
@@ -145,7 +152,7 @@ fun QuestionBankScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        containerColor = CardColors.StatsMint
                     )
                 ) {
                     Column(
@@ -157,7 +164,7 @@ fun QuestionBankScreen(
                             Icon(
                                 Icons.Default.Quiz,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.secondary
+                                tint = BrandColors.PrimaryDeep
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
@@ -192,7 +199,7 @@ fun QuestionBankScreen(
                                 Icons.Default.LibraryBooks,
                                 contentDescription = null,
                                 modifier = Modifier.size(64.dp),
-                                tint = MaterialTheme.colorScheme.secondary
+                                tint = BrandColors.PrimaryDeep
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
@@ -203,10 +210,15 @@ fun QuestionBankScreen(
                             Text(
                                 "点击右上角 + 创建题库",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = BrandColors.TextSecondary
                             )
                             Spacer(modifier = Modifier.height(16.dp))
-                            Button(onClick = { showAddBankDialog = true }) {
+                            Button(
+                                onClick = { showAddBankDialog = true },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = BrandColors.PrimaryDeep
+                                )
+                            ) {
                                 Icon(Icons.Default.Add, contentDescription = null)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text("创建题库")
@@ -239,7 +251,7 @@ fun QuestionBankScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                        containerColor = CardColors.TaskItem
                     )
                 ) {
                     Row(
@@ -253,16 +265,18 @@ fun QuestionBankScreen(
                             Text(
                                 selectedBank!!.bankName,
                                 style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                color = BrandColors.TextDark
                             )
                             Text(
                                 selectedBank!!.description,
-                                style = MaterialTheme.typography.bodySmall
+                                style = MaterialTheme.typography.bodySmall,
+                                color = BrandColors.TextSecondary
                             )
                         }
                         // 显示题目数量的徽章
                         Badge(
-                            containerColor = MaterialTheme.colorScheme.tertiary
+                            containerColor = BrandColors.IconOrange
                         ) {
                             Text(
                                 "${selectedBank!!.questionCount}题",
@@ -289,7 +303,7 @@ fun QuestionBankScreen(
                                 Icons.Default.HelpOutline,
                                 contentDescription = null,
                                 modifier = Modifier.size(48.dp),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                tint = BrandColors.TextSecondary
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
@@ -300,7 +314,7 @@ fun QuestionBankScreen(
                             Text(
                                 "点击右上角 + 添加题目",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = BrandColors.TextSecondary
                             )
                         }
                     }
